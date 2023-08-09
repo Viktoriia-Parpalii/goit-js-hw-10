@@ -53,7 +53,7 @@ function createMarkupCards(arr) {
       <p>${description}</p>
       <p>Temperament: ${temperament}</p>`;
 
-      refs.select.insertAdjacentHTML('beforeend', card);
+      refs.catCard.insertAdjacentHTML('beforeend', card);
     }
   );
 }
