@@ -34,6 +34,7 @@ function createMarkupOptins(arr) {
 refs.select.addEventListener('change', e => {
   const id = e.target.value;
   refs.loader.style.display = 'block';
+
   fetchCatByBreed(id)
     .then(catInfo => {
       refs.loader.style.display = 'none';
@@ -53,7 +54,7 @@ function createMarkupCards(arr) {
       <p>${description}</p>
       <p>Temperament: ${temperament}</p>`;
 
-      refs.catCard.insertAdjacentHTML('beforeend', card);
+      refs.catCard.innerHTML = card;
     }
   );
 }
