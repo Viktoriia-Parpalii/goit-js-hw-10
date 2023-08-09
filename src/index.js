@@ -33,10 +33,29 @@ function createMarkupOptins(arr) {
 
 refs.select.addEventListener('change', e => {
   const id = e.target.value;
-  //   console.log(id);
+  refs.loader.style.display = 'block';
   fetchCatByBreed(id)
-    .then(catInfo => console.log(dacatInfota))
+    .then(catInfo => {
+      refs.loader.style.display = 'none';
+      console.log(catInfo);
+      createMarkupCards(catInfo);
+    })
     .catch(err => err);
 });
+
+function createMarkupCards(arr) {
+  return arr.map(
+    ({ breeds: { name, description, temperament }, url, width, height }) => {
+      console.log({ url, name, description, temperament });
+      const card = ` 
+      <img src="${url}" alt="${name}" width="${width}" height="${height}">
+      <p>${name}</p>
+      <p>${description}</p>
+      <p>Temperament: ${temperament}</p>`;
+
+      refs.select.insertAdjacentHTML('beforeend', card);
+    }
+  );
+}
 
 export { refs };

@@ -14,7 +14,7 @@ function fetchBreeds() {
       throw new Error(Notify.failure(refs.err.textContent));
     }
 
-    return res;
+    return res.data;
   });
 }
 function fetchCatByBreed(breedId) {
