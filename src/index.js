@@ -38,25 +38,23 @@ refs.select.addEventListener('change', e => {
   fetchCatByBreed(id)
     .then(catInfo => {
       refs.loader.style.display = 'none';
-      console.log(catInfo);
+      //   console.log(catInfo);
       createMarkupCards(catInfo);
     })
     .catch(err => err);
 });
 
-function createMarkupCards(arr) {
-  return arr.map(
-    ({ breeds: { name, description, temperament }, url, width, height }) => {
-      console.log({ url, name, description, temperament });
-      const card = ` 
-      <img src="${url}" alt="${name}" width="${width}" height="${height}">
-      <p>${name}</p>
-      <p>${description}</p>
-      <p>Temperament: ${temperament}</p>`;
+function createMarkupCards(data) {
+  return ({ breeds: { name, description, temperament }, url }) => {
+    console.log(url, name, description, temperament);
+    const card = ` 
+      <img src="${url}" alt="${name}" width="500" height="500">
+      <p class="name">${name}</p>
+      <p class="description">${description}</p>
+      <p class="temperament">Temperament: ${temperament}</p>`;
 
-      refs.catCard.innerHTML = card;
-    }
-  );
+    refs.catCard.innerHTML = card;
+  };
 }
 
 export { refs };
