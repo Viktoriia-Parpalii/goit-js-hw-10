@@ -24,8 +24,6 @@ Loading.dots({
 
 fetchBreeds()
   .then(data => {
-    Loading.remove();
-
     refs.select.style.display = 'flex';
     refs.loader.style.display = 'none';
 
@@ -36,8 +34,8 @@ fetchBreeds()
   })
   .catch(err => {
     Notify.failure(refs.err.textContent);
-    Loading.remove();
-  });
+  })
+  .finally(result => Loading.remove());
 
 function createMarkupOptins(arr) {
   return arr.map(({ id, name }) => {
@@ -60,14 +58,12 @@ refs.select.addEventListener('change', e => {
   fetchCatByBreed(id)
     .then(catInfo => {
       refs.catCard.style.display = 'flex';
-
-      Loading.remove();
       createMarkupCards(catInfo);
     })
     .catch(err => {
       Notify.failure(refs.err.textContent);
-      Loading.remove();
-    });
+    })
+    .finally(result => Loading.remove());
 });
 
 function createMarkupCards(data) {
