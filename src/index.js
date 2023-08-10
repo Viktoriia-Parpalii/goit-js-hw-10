@@ -38,12 +38,14 @@ fetchBreeds()
   .finally(result => Loading.remove());
 
 function createMarkupOptins(arr) {
-  return arr.map(({ id, name }) => {
-    console.log({ id, name });
+  return arr
+    .map(({ id, name }) => {
+      console.log({ id, name });
 
-    const option = `<option value=${id}>${name}</option>`;
-    refs.select.insertAdjacentHTML('beforeend', option);
-  });
+      const option = `<option value=${id}>${name}</option>`;
+      refs.select.insertAdjacentHTML('beforeend', option);
+    })
+    .join('');
 }
 
 refs.select.addEventListener('change', e => {
