@@ -1,6 +1,8 @@
 import SlimSelect from 'slim-select';
 import 'slim-select/dist/slimselect.css';
 import { fetchBreeds, fetchCatByBreed } from './cat-api.js';
+import { Loading } from 'notiflix/build/notiflix-loading-aio';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 const refs = {
   select: document.querySelector('.breed-select'),
@@ -9,23 +11,38 @@ const refs = {
   catCard: document.querySelector('.cat-info'),
 };
 
+refs.loader.style.display = 'none';
 refs.err.style.display = 'none';
 refs.select.style.display = 'none';
+refs.catCard.style.display = 'none';
+
+Loading.dots({
+  svgColor: '#5897fb',
+  svgSize: '130px',
+  messageFontSize: '30px',
+});
 
 fetchBreeds()
   .then(data => {
-    refs.select.style.display = 'block';
+    Loading.remove();
+
+    refs.select.style.display = 'flex';
     refs.loader.style.display = 'none';
+
     createMarkupOptins(data);
     new SlimSelect({
       select: refs.select,
     });
   })
-  .catch(err => err);
+  .catch(err => {
+    Notify.failure(refs.err.textContent);
+    Loading.remove();
+  });
 
 function createMarkupOptins(arr) {
   return arr.map(({ id, name }) => {
-    // console.log({ id, name });
+    console.log({ id, name });
+
     const option = `<option value=${id}>${name}</option>`;
     refs.select.insertAdjacentHTML('beforeend', option);
   });
@@ -33,28 +50,39 @@ function createMarkupOptins(arr) {
 
 refs.select.addEventListener('change', e => {
   const id = e.target.value;
-  refs.loader.style.display = 'block';
+
+  Loading.dots({
+    svgColor: '#5897fb',
+    svgSize: '130px',
+    messageFontSize: '30px',
+  });
 
   fetchCatByBreed(id)
     .then(catInfo => {
-      refs.loader.style.display = 'none';
-      //   console.log(catInfo);
+      refs.catCard.style.display = 'flex';
+
+      Loading.remove();
       createMarkupCards(catInfo);
     })
-    .catch(err => err);
+    .catch(err => {
+      Notify.failure(refs.err.textContent);
+      Loading.remove();
+    });
 });
 
 function createMarkupCards(data) {
-  return ({ breeds: { name, description, temperament }, url }) => {
-    console.log(url, name, description, temperament);
-    const card = ` 
-      <img src="${url}" alt="${name}" width="500" height="500">
-      <p class="name">${name}</p>
-      <p class="description">${description}</p>
-      <p class="temperament">Temperament: ${temperament}</p>`;
+  // const {
+  //   breeds: { name, description, temperament },
+  //   url,
+  // } = data;
 
-    refs.catCard.innerHTML = card;
-  };
+  const card = ` 
+      <img class="cat-img" src="${data.url}" alt="${data.breeds[0].name}"  >
+       <div class="cat-right">
+      <h1 class="name">${data.breeds[0].name}</h1>
+      <p class="description">${data.breeds[0].description}</p>
+      <p class="temperament"><span class="temperament-span">Temperament:</span> ${data.breeds[0].temperament}</p>    
+      </div>`;
+
+  refs.catCard.innerHTML = card;
 }
-
-export { refs };

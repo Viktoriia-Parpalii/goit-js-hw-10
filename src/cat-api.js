@@ -1,5 +1,3 @@
-import { Notify } from 'notiflix/build/notiflix-notify-aio';
-import { refs } from './index.js';
 import axios from 'axios';
 
 const URL = 'https://api.thecatapi.com/v1/';
@@ -11,9 +9,8 @@ function fetchBreeds() {
   const BREEDS_URL = `${URL}breeds`;
   return axios.get(BREEDS_URL).then(res => {
     if (res.status !== 200) {
-      throw new Error(Notify.failure(refs.err.textContent));
+      throw new Error(res.status);
     }
-
     return res.data;
   });
 }
@@ -24,7 +21,7 @@ function fetchCatByBreed(breedId) {
   });
   return axios.get(`${IMAGES_URL}?${params}`).then(res => {
     if (res.status !== 200) {
-      throw new Error(Notify.failure(refs.err.textContent));
+      throw new Error(res.status);
     }
     return res.data[0];
   });
