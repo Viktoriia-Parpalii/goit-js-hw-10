@@ -69,18 +69,26 @@ refs.select.addEventListener('change', e => {
 });
 
 function createMarkupCards(data) {
-  // const {
-  //   breeds: { name, description, temperament },
-  //   url,
-  // } = data;
+  const {
+    breeds: { name, description, temperament },
+    url,
+  } = data;
 
   const card = ` 
-      <img class="cat-img" src="${data.url}" alt="${data.breeds[0].name}"  >
+      <img class="cat-img" src="${url}" alt="${name}"  >
        <div class="cat-right">
-      <h1 class="name">${data.breeds[0].name}</h1>
-      <p class="description">${data.breeds[0].description}</p>
-      <p class="temperament"><span class="temperament-span">Temperament:</span> ${data.breeds[0].temperament}</p>    
+      <h1 class="name">${name}</h1>
+      <p class="description">${description}</p>
+      <p class="temperament"><span class="temperament-span">Temperament:</span> ${temperament}</p>    
       </div>`;
+
+  // const card = `
+  //     <img class="cat-img" src="${data.url}" alt="${data.breeds[0].name}"  >
+  //      <div class="cat-right">
+  //     <h1 class="name">${data.breeds[0].name}</h1>
+  //     <p class="description">${data.breeds[0].description}</p>
+  //     <p class="temperament"><span class="temperament-span">Temperament:</span> ${data.breeds[0].temperament}</p>
+  //     </div>`;
 
   refs.catCard.innerHTML = card;
 }
